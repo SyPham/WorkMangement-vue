@@ -1,0 +1,20 @@
+<template>
+  <footer class="main-footer" id="appFooter">
+    <div class="float-right d-none d-sm-block">
+      <b>Version</b> 3.0.2
+    </div>
+    <strong>
+      Copyright &copy; 2014-2019
+      <a href="http://adminlte.io">AdminLTE.io</a>.
+    </strong>
+    All rights reserved.
+  </footer>
+</template>
+
+<script>
+export default {
+  name: "appFooter"
+};
+</script>
+
+<style scoped></style>
