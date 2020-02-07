@@ -39,7 +39,7 @@
           </div>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">
+          <a class="nav-link" @click.prevent="logout">
             <i class="fa fa-sign-out"></i> Sign-Out
           </a>
         </li>
@@ -50,7 +50,18 @@
 
 <script>
 export default {
-  name: "appHeader"
+  name: "appHeader",
+  methods: {
+    logout: function() {
+      this.$auth.destroyToken();
+      // this.user = {};
+      var uri = this.$route.path;
+      console.log(uri);
+      this.$router.push({ path: "/login", query: { redirect: uri } });
+      // alert("success!");
+      this.$swal("success!");
+    }
+  }
 };
 </script>
 

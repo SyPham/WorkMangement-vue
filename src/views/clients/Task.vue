@@ -44,11 +44,64 @@
           </div>
           <!-- /.card-header -->
           <div class="card-body table-responsive p-0">
-            <table class="table table-hover">
+            <ejs-grid
+              :dataSource="data"
+              :allowPaging="true"
+              :pageSettings="pageSettings"
+              :editSettings="editSettings"
+              :toolbar="toolbar"
+            >
+              <e-columns>
+                <e-column
+                  field="ID"
+                  headerText="ID"
+                  :disableHtmlEncode="false"
+                  width="80"
+                  textAlign="Center"
+                ></e-column>
+                <e-column
+                  field="From"
+                  headerText="<span> From </span>"
+                  :disableHtmlEncode="false"
+                  width="180"
+                ></e-column>
+                <e-column field="PIC" headerText="PIC" width="180" format="yMd" textAlign="Right"></e-column>
+                <e-column
+                  field="Description"
+                  headerText="Description"
+                  width="180"
+                  textAlign="Center"
+                ></e-column>
+                <e-column field="DueDate" headerText="DueDate" width="250" textAlign="Center"></e-column>
+                <e-column field="Remark" headerText="Remark" width="180" textAlign="Center"></e-column>
+                <e-column
+                  field="state"
+                  :disableHtmlEncode="false"
+                  headerText="Status"
+                  width="100"
+                  textAlign="Center"
+                ></e-column>
+                <e-column field="Level" headerText="Level" width="80" textAlign="Center"></e-column>
+                <e-column
+                  field="CreatedDate"
+                  headerText="CreatedDate"
+                  width="250"
+                  textAlign="Center"
+                ></e-column>
+                <e-column
+                  field="Option"
+                  defaultValue="subTask"
+                  headerText="Option"
+                  width="80"
+                  textAlign="Center"
+                ></e-column>
+              </e-columns>
+            </ejs-grid>
+            <!-- <table class="table table-hover">
               <thead>
                 <tr>
                   <th>ID</th>
-                  <th>Job Type</th>
+                  <th>From</th>
                   <th>Job Name/ Project Name</th>
                   <th>Be Assigned</th>
                   <th>Description</th>
@@ -60,22 +113,24 @@
                 </tr>
               </thead>
               <tbody style="overflow-y:hidden">
-                <tr>
-                  <td>1</td>
-                  <td>Project</td>
-                  <td>KPI System</td>
+                <tr v-for="(task,key,index) in tasks" :key="index">
+                  <td>{{key + 1}}</td>
+                  <td>{{task.From}}</td>
+                  <td>{{task.ProjectName}}</td>
                   <td>
-                    <span class="badge bg-secondary">Henry</span>
-                    <span class="badge bg-secondary">Leo</span>
-                    <span class="badge bg-secondary">Peter</span>
+                    <span
+                      v-for="(pic,key,index) in task.PIC"
+                      :key="index"
+                      class="badge bg-secondary"
+                    >{{pic}}</span>
                   </td>
-                  <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                  <td>12/30/2019</td>
-                  <td>Completed multi language.</td>
+                  <td>{{task.Description}}</td>
+                  <td>{{task.DueDate}}</td>
+                  <td>{{task.Remark}}</td>
                   <td>
-                    <span class="badge bg-danger">Undone</span>
+                    <span class="badge bg-danger">{{task.Status== true ? "done": "undone"}}</span>
                   </td>
-                  <td>3/4/2019</td>
+                  <td>{{task.CreatedDate}}</td>
                   <td class="py-0 align-middle">
                     <button
                       type="button"
@@ -87,74 +142,8 @@
                     </button>
                   </td>
                 </tr>
-                <tr>
-                  <td>2</td>
-                  <td>Project</td>
-                  <td>Mixing Machine</td>
-                  <td>
-                    <span class="badge bg-secondary">Henry</span>
-                    <span class="badge bg-secondary">Leo</span>
-                    <span class="badge bg-secondary">Peter</span>
-                  </td>
-                  <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                  <td>12/30/2019</td>
-                  <td>Completed multi language.</td>
-                  <td>
-                    <span class="badge bg-danger">Undone</span>
-                  </td>
-                  <td>3/4/2019</td>
-                  <td class="py-0 align-middle">
-                    <button type="button" class="btn btn-block btn-info btn-xs">
-                      <i class="fas fa-plus"></i> Sub
-                    </button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>3</td>
-                  <td>Project</td>
-                  <td>Tracking Document System</td>
-                  <td>
-                    <span class="badge bg-secondary">Henry</span>
-                    <span class="badge bg-secondary">Leo</span>
-                    <span class="badge bg-secondary">Peter</span>
-                  </td>
-                  <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                  <td>12/30/2019</td>
-                  <td>Completed multi language.</td>
-                  <td>
-                    <span class="badge bg-danger">Undone</span>
-                  </td>
-                  <td>3/4/2019</td>
-                  <td class="py-0 align-middle">
-                    <button type="button" class="btn btn-block btn-info btn-xs">
-                      <i class="fas fa-plus"></i> Sub
-                    </button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>4</td>
-                  <td>Project</td>
-                  <td>Work Management System</td>
-                  <td>
-                    <span class="badge bg-secondary">Henry</span>
-                    <span class="badge bg-secondary">Leo</span>
-                    <span class="badge bg-secondary">Peter</span>
-                  </td>
-                  <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                  <td>3/1/2020</td>
-                  <td>Completed multi language.</td>
-                  <td>
-                    <span class="badge bg-danger">Undone</span>
-                  </td>
-                  <td>12/4/2019</td>
-                  <td class="py-0 align-middle">
-                    <button type="button" class="btn btn-block btn-info btn-xs">
-                      <i class="fas fa-plus"></i> Sub
-                    </button>
-                  </td>
-                </tr>
               </tbody>
-            </table>
+            </table>-->
           </div>
           <!-- ./card-body -->
           <div class="card-footer clearfix">
@@ -203,47 +192,205 @@
           </div>
           <div class="modal-body">
             <div class="row">
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label for="JobType">Job Type</label>
-                  <input type="text" id="JobType" class="form-control JobType" />
+              <div class="col-md-12">
+                <div class="card card-primary card-outline card-outline-tabs">
+                  <div class="card-header p-0 border-bottom-0">
+                    <ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist">
+                      <li class="nav-item">
+                        <a
+                          class="nav-link active"
+                          id="custom-tabs-three-home-tab"
+                          data-toggle="pill"
+                          href="#custom-tabs-three-home"
+                          role="tab"
+                          aria-controls="custom-tabs-three-home"
+                          aria-selected="true"
+                        >Routine</a>
+                      </li>
+                      <li class="nav-item">
+                        <a
+                          class="nav-link"
+                          id="custom-tabs-three-profile-tab"
+                          data-toggle="pill"
+                          href="#custom-tabs-three-profile"
+                          role="tab"
+                          aria-controls="custom-tabs-three-profile"
+                          aria-selected="false"
+                        >Project</a>
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="card-body">
+                    <div class="tab-content" id="custom-tabs-three-tabContent">
+                      <div
+                        class="tab-pane fade active show"
+                        id="custom-tabs-three-home"
+                        role="tabpanel"
+                        aria-labelledby="custom-tabs-three-home-tab"
+                      >
+                        <div class="form-group">
+                          <label for="JobType">Routine</label>
+                          <input
+                            type="text"
+                            id="JobType"
+                            v-model="task.jobName"
+                            class="form-control JobType"
+                          />
+                        </div>
+                      </div>
+                      <div
+                        class="tab-pane fade"
+                        id="custom-tabs-three-profile"
+                        role="tabpanel"
+                        aria-labelledby="custom-tabs-three-profile-tab"
+                      >
+                        <div class="form-group">
+                          <label class="typo__label">Project</label>
+                          <multiselect
+                            v-model="projectSelected"
+                            deselect-label="Can't remove this value"
+                            track-by="ID"
+                            label="Name"
+                            placeholder="Select one"
+                            :options="projectOptions"
+                            :searchable="false"
+                            :allow-empty="false"
+                            @tag="addTagProject"
+                            @select="onSelectProject"
+                          ></multiselect>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- /.card -->
                 </div>
               </div>
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label for="TypeName">Project Name / Job Name</label>
-                  <input type="text" id="TypeName" class="form-control TypeName" />
+              <div class="col-md-12">
+                <div class="card card-primary card-outline card-outline-tabs">
+                  <div class="card-header p-0 border-bottom-0">
+                    <ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist">
+                      <li class="nav-item">
+                        <a
+                          class="nav-link active"
+                          id="tabs-who-tab"
+                          data-toggle="pill"
+                          href="#tabs-who"
+                          role="tab"
+                          aria-controls="tabs-who"
+                          aria-selected="true"
+                        >From Who?</a>
+                      </li>
+                      <li class="nav-item">
+                        <a
+                          class="nav-link"
+                          id="tabs-where-tab"
+                          data-toggle="pill"
+                          href="#tabs-where"
+                          role="tab"
+                          aria-controls="tabs-where"
+                          aria-selected="false"
+                        >From Where?</a>
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="card-body">
+                    <div class="tab-content" id="custom-tabs-three-tabContent">
+                      <div
+                        class="tab-pane fade active show"
+                        id="tabs-who"
+                        role="tabpanel"
+                        aria-labelledby="tabs-who"
+                      >
+                        <div class="form-group">
+                          <label for="JobType">Who?</label>
+                          <input
+                            type="text"
+                            id="JobType"
+                            v-model="who"
+                            class="form-control JobType"
+                          />
+                        </div>
+                      </div>
+                      <div
+                        class="tab-pane fade"
+                        id="tabs-where"
+                        role="tabpanel"
+                        aria-labelledby="tabs-where"
+                      >
+                        <div class="form-group">
+                          <label class="typo__label">Where?</label>
+                          <multiselect
+                            v-model="ocSelected"
+                            deselect-label="Can't remove this value"
+                            track-by="ID"
+                            label="Name"
+                            placeholder="Select one"
+                            :options="ocOptions"
+                            :searchable="false"
+                            :allow-empty="false"
+                          ></multiselect>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- /.card -->
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="form-group">
                   <label for="Assigned">Be Assigned</label>
-                  <input type="text" id="Assigned" class="form-control Assigned" />
+                  <multiselect
+                    v-model="selected"
+                    tag-placeholder="Add this as new tag"
+                    placeholder="Search or add a tag"
+                    label="Username"
+                    track-by="ID"
+                    :options="options"
+                    :multiple="true"
+                    :taggable="true"
+                    @tag="addTag"
+                    @select="onSelectTask"
+                  ></multiselect>
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="form-group">
                   <label for="Description">Description</label>
-                  <input type="text" id="Description" class="form-control Description" />
+                  <input
+                    type="text"
+                    id="Description"
+                    v-model="task.description"
+                    class="form-control Description"
+                  />
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="form-group">
                   <label for="Description">Deadline</label>
-                  <input type="text" id="Description" class="form-control Description" />
+                  <datetime
+                    v-model="date"
+                    input-class="form-control"
+                    placeholder="Select date"
+                    type="date"
+                  ></datetime>
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="form-group">
                   <label for="Description">Remark</label>
-                  <input type="text" id="Description" class="form-control Description" />
+                  <input
+                    type="text"
+                    id="Description"
+                    v-model="task.remark"
+                    class="form-control Description"
+                  />
                 </div>
               </div>
             </div>
           </div>
           <div class="modal-footer justify-content-between">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Save changes</button>
+            <button type="button" class="btn btn-primary" @click="createTask">Save changes</button>
           </div>
         </div>
         <!-- /.modal-content -->
@@ -278,7 +425,17 @@
               <div class="col-md-6">
                 <div class="form-group">
                   <label for="Assigned">Be Assigned</label>
-                  <input type="text" id="Assigned" class="form-control Assigned" />
+                  <multiselect
+                    v-model="selected"
+                    tag-placeholder="Add this as new tag"
+                    placeholder="Search or add a tag"
+                    label="ID"
+                    track-by="Username"
+                    :options="options"
+                    :multiple="true"
+                    :taggable="true"
+                    @tag="addTag"
+                  ></multiselect>
                 </div>
               </div>
               <div class="col-md-6">
@@ -290,13 +447,18 @@
               <div class="col-md-6">
                 <div class="form-group">
                   <label for="Description">Deadline</label>
-                  <input type="text" id="Description" class="form-control Description" />
+                  <datetime
+                    v-model="date"
+                    input-class="form-control"
+                    placeholder="Select date"
+                    type="datetime"
+                  ></datetime>
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="form-group">
-                  <label for="Description">Remark</label>
-                  <input type="text" id="Description" class="form-control Description" />
+                  <label for="Remark">Remark</label>
+                  <input type="text" id="Remark" class="form-control Remark" />
                 </div>
               </div>
             </div>
@@ -314,10 +476,178 @@
 </template>
 
 <script>
+import Vue from "vue";
+import Multiselect from "vue-multiselect";
+import { Datetime } from "vue-datetime";
+import { GridPlugin, Edit, Toolbar, Page } from "@syncfusion/ej2-vue-grids";
+Vue.use(GridPlugin);
+// register globally
+Vue.component("multiselect", Multiselect);
 export default {
-  name: "client-task"
+  name: "client-task",
+  components: {
+    Multiselect,
+    Datetime
+  },
+  data() {
+    return {
+      editSettings: {
+        allowEditing: true,
+        allowAdding: true,
+        allowDeleting: true,
+        mode: "Dialog"
+      },
+      toolbar: ["Add", "Edit", "Delete"],
+      orderidrules: { required: true, number: true },
+      customeridrules: { required: true },
+      freightrules: { required: true },
+      editparams: { params: { popupHeight: "300px" } },
+      pageSettings: { pageCount: 5 },
+      PIC: [],
+      expanded: {},
+      selected: [],
+      options: [],
+      date: "",
+      data: [],
+      ocSelected: [],
+      ocOptions: [],
+      userSelected: [],
+      userOptions: [],
+      who: "",
+      tasks: [],
+      task: {
+        id: 0,
+        description: "",
+        from: "",
+        jobName: "",
+        createdBy: 0,
+        projectID: 0,
+        parentID: 0,
+        remark: "",
+        deadline: "",
+        status: false,
+        pic: []
+      },
+      projectOptions: [],
+      projectSelected: []
+    };
+  },
+  created() {
+    this.getUser();
+    this.getProjects();
+    this.getFrom();
+    console.log(this.task);
+    this.getTasks();
+    this.who = localStorage.getItem("User");
+  },
+  methods: {
+    customiseCell: function(args) {
+      console.log("customiseCell");
+      console.log(args);
+
+      if (args.column.field === "State") {
+        args.cell.setAttribute("style", "background-color:red;color:white;");
+      }
+    },
+    addTagProject(newTag) {
+      const tag = {
+        ID: newTag,
+        Name: newTag.substring(0, 2) + Math.floor(Math.random() * 10000000)
+      };
+      this.projectOptions.push(tag);
+      this.projectSelected.push(tag);
+      this.selected.map(item => {
+        this.task.projectID = item.ID;
+      });
+      console.log(this.task.projectID);
+    },
+    addTag(newTag) {
+      const tag = {
+        ID: newTag,
+        Username: newTag.substring(0, 2) + Math.floor(Math.random() * 10000000)
+      };
+      this.options.push(tag);
+      this.selected.push(tag);
+      this.selected.map(item => {
+        this.task.pic.push(item.ID);
+      });
+    },
+    getUser() {
+      var self = this;
+      self.$api.get("api/Tasks/GetListUser").then(res => {
+        self.options = res.data;
+        console.log(res);
+      });
+    },
+    getTasks() {
+      var self = this;
+      self.$api.get("api/Tasks/GetListTreeTask").then(res => {
+        self.tasks = res.data;
+        self.data = res.data;
+        console.log(self.data);
+      });
+    },
+    onSelectTask(option) {
+      this.task.pic.push(option.ID);
+      console.log(this.task.pic);
+    },
+    onSelectProject(option) {
+      this.task.projectID = option.ID;
+      console.log(this.task.projectID);
+    },
+    getProjects() {
+      var self = this;
+      self.$api.get("api/Tasks/GetListProject").then(res => {
+        self.projectOptions = res.data;
+        console.log(res);
+      });
+    },
+    getFrom() {
+      var self = this;
+      self.$api.get("api/Tasks/From").then(res => {
+        self.ocOptions = res.data.ocs;
+        self.userOptions = res.data.users;
+
+        console.log(res);
+      });
+    },
+    createTask() {
+      var self = this;
+      console.log("createTask");
+
+      console.log(self.task);
+      self.$api.post("api/Tasks/CreateTask", self.task).then(res => {
+        self.options = res.data;
+
+        console.log(res);
+      });
+    },
+    dateFormat(date) {
+      var d = new Date(date);
+      var m, day, month;
+      m = d.getMonth() + 1;
+      if (m < 10) month = "0" + m;
+      if (d.getDate() < 10) day = "0" + d.getDate();
+      else day = d.getDate();
+
+      var year = d.getFullYear();
+      var formattedDate = day + "/" + month + "/" + year;
+      return formattedDate;
+    }
+  },
+  watch: {
+    task: function(newVal, oldVal) {
+      console.log(newVal);
+    },
+    date: function(newVal, oldVal) {
+      this.task.deadline = this.dateFormat(newVal);
+    }
+  },
+  provide: {
+    grid: [Edit, Toolbar, Page]
+  }
 };
 </script>
-
+<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 <style scoped>
 </style>

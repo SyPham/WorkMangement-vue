@@ -27,51 +27,51 @@ const router = new VueRouter({
       path: "/",
       component: Dash,
       redirect: "/home",
-      children: [{ path: "home", component: Home }]
+      children: [{ path: "home", component: Home, meta: { requiresAuth: true }  }]
     },
     //adminoc
     {
       path: "/admin-oc",
       component: Dash,
-      children: [{ path: "/admin-oc", component: OC }]
+      children: [{ path: "/admin-oc", component: OC, meta: { requiresAuth: true }  }]
     },
     //adminrole
     {
       path: "/admin-role",
       component: Dash,
-      children: [{ path: "/admin-role", component: Role }]
+      children: [{ path: "/admin-role", component: Role, meta: { requiresAuth: true }  }]
     },
     //adminuser
     {
       path: "/admin-user",
       component: Dash,
-      children: [{ path: "/admin-user", component: User }]
+      children: [{ path: "/admin-user", component: User, meta: { requiresAuth: true }  }]
     },
     //adminproject
     {
       path: "/admin-project",
       component: Dash,
-      children: [{ path: "/admin-project", component: Project }]
+      children: [{ path: "/admin-project", component: Project , meta: { requiresAuth: true } }]
     },
     //Login
     {
       path: "/login",
       component: Auth,
-      children: [{ path: "/login", component: Login }]
+      children: [{ path: "/login", component: Login}]
     },
 
     //client task
     {
       path: "/client-task",
       component: Dash,
-      children: [{ path: "/client-task", component: Task }]
+      children: [{ path: "/client-task", component: Task, meta: { requiresAuth: true }  }]
     },
 
     //client task
     {
       path: "/client-history",
       component: Dash,
-      children: [{ path: "/client-history", component: History }]
+      children: [{ path: "/client-history", component: History , meta: { requiresAuth: true } }]
     }
   ]
 });
