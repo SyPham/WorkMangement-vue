@@ -27,12 +27,7 @@
             </div>
             <div class="card-tools pr-5">
               <div class="input-group input-group-sm" style="width: 150px;">
-                <input
-                  type="text"
-                  name="table_search"
-                  class="form-control float-right"
-                  placeholder="Search"
-                />
+                <input type="text" name="table_search" class="form-control float-right" placeholder="Search" />
 
                 <div class="input-group-append">
                   <button type="submit" class="btn btn-default">
@@ -53,34 +48,21 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>1</td>
-                  <td>Project 1</td>
+                <tr v-for="(item,key,index) in ListProject" :key="index">
+                  <td>{{item.ID}}</td>
+                  <td>{{item.Name}}</td>
                   <td class="py-0 align-middle">
                     <div class="btn-group btn-group-sm">
-                      <a href="#" class="btn btn-info">
-                        <i class="fas fa-edit"></i>
+                      <a @click="edit(item,index)" style="cursor: pointer;" class="btn btn-info">
+                        <i style="color:white" class="fas fa-edit"></i>
                       </a>
-                      <a href="#" class="btn btn-danger">
-                        <i class="fas fa-trash"></i>
+                      <a style="cursor: pointer;"  @click="remove(item.ID)" class="btn btn-danger">
+                        <i style="color:white" class="fas fa-trash"></i>
                       </a>
                     </div>
                   </td>
                 </tr>
-                <tr>
-                  <td>2</td>
-                  <td>Project 2</td>
-                  <td class="py-0 align-middle">
-                    <div class="btn-group btn-group-sm">
-                      <a href="#" class="btn btn-info">
-                        <i class="fas fa-edit"></i>
-                      </a>
-                      <a href="#" class="btn btn-danger">
-                        <i class="fas fa-trash"></i>
-                      </a>
-                    </div>
-                  </td>
-                </tr>
+                
               </tbody>
             </table>
           </div>
@@ -118,6 +100,7 @@
       </div>
       <!-- /.col -->
     </div>
+    <!-- modal -->
     <div class="modal fade" id="modal-add" aria-hidden="true" style="display: none;">
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -131,29 +114,30 @@
           </div>
           <div class="modal-body">
             <div class="row">
-              <div class="col-md-6">
+              <!-- <div class="col-md-6">
                 <div class="form-group">
                   <label for="ID">ID</label>
                   <input type="text" id="ID" class="form-control ID" />
                 </div>
-              </div>
-              <div class="col-md-6">
+              </div> -->
+              <div class="col-md-12">
                 <div class="form-group">
                   <label for="Name">Name</label>
-                  <input type="text" id="Name" class="form-control Name" />
+                  <input v-model="name" type="text" id="Name" class="form-control Name" />
                 </div>
               </div>
             </div>
           </div>
           <div class="modal-footer justify-content-between">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Save changes</button>
+            <button @click="save" type="button" class="btn btn-primary">Save changes</button>
           </div>
         </div>
         <!-- /.modal-content -->
       </div>
       <!-- /.modal-dialog -->
     </div>
+
     <div class="modal fade" id="modal-edit" aria-hidden="true" style="display: none;">
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -167,23 +151,23 @@
           </div>
           <div class="modal-body">
             <div class="row">
-              <div class="col-md-6">
+              <!-- <div class="col-md-6">
                 <div class="form-group">
                   <label for="ID">ID</label>
                   <input type="text" id="ID" class="form-control ID" />
                 </div>
-              </div>
-              <div class="col-md-6">
+              </div> -->
+              <div class="col-md-12">
                 <div class="form-group">
                   <label for="Name">Name</label>
-                  <input type="text" id="Name" class="form-control Name" />
+                  <input v-model="nameEdit" type="text" id="Name" class="form-control Name" />
                 </div>
               </div>
             </div>
           </div>
           <div class="modal-footer justify-content-between">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Save changes</button>
+            <button @click="update" type="button" class="btn btn-primary">Save changes</button>
           </div>
         </div>
         <!-- /.modal-content -->
@@ -195,7 +179,95 @@
 
 <script>
 export default {
-  name: "admin-role"
+  name: "admin-role",
+  data(){
+    return{
+      ListProject: [],
+      name: null,
+      nameEdit: null,
+      ID: null,
+      bugIndex: null
+    }
+  },
+  created(){
+    this.getproject()
+  },
+  methods:{
+    getproject(){
+      let self = this
+      this.$api.get('api/Projects/GetListProject').then(res=>{
+        console.log(res)
+        self.ListProject = res.data
+        console.log("self.ListProject")
+        console.log(self.ListProject)        
+      })
+    },
+    save(){
+      this.$api.post('api/projects/create',{
+        Name: this.name
+      }).then(res=>{
+        // this.$router.push()
+        this.$swal('Success !', 'New Project Add Success', 'success');
+        this.getproject();
+        this.resetForm();
+      })
+      $("#modal-add").modal('hide');
+      console.log('aaa')
+    },
+    resetForm(){
+      $('#modal-add .Name').val("");
+    },
+    remove(id){
+      this.$swal({
+          title: 'Are you sure?',
+          text: 'You can\'t revert your action',
+          type: 'warning',
+          showCancelButton: true,
+          confirmButtonText: 'Yes Delete it!',
+          cancelButtonText: 'No, Keep it!',
+          showCloseButton: true,
+          showLoaderOnConfirm: true
+        })
+        .then(result => {
+          if (result.value) {
+            this.$api.delete(`api/Projects/DeleteProject/${id}`)
+              .then(r => {
+                this.getproject();
+                this.$swal('Deleted', 'You successfully deleted this project', 'success')
+                // alertify.success("Success");
+              })
+              .catch(r => {
+                console.log(r);
+              });
+          } else {
+            this.$swal('Cancelled', 'Your project is still intact', 'info')
+          }
+        });
+      // console.log(id);
+    },
+    edit: function(item,index){
+      $("#modal-edit").modal('show');
+      this.ID = item.ID;
+      this.nameEdit = item.Name;
+      // this.$api.get(`api/Projects/GetByID/${id}`).then(res=>{
+      //   this.nameEdit = res.data.Name
+      // })
+    },
+    update(item,index){
+      console.log(this.ID)
+      this.$api.post('api/Projects/Update',{
+        ID: this.ID,
+        Name: this.nameEdit
+      }).then(res=>{
+        this.$swal('Success !', 'Project Update Success', 'success');
+        // this.$swal("success!");
+        $("#modal-edit").modal('hide');
+        this.getproject();
+      }).catch(e=>{
+        this.$swal("error!");
+      })
+    }
+  }
 };
 </script>
 
